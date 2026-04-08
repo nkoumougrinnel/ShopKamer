@@ -1,0 +1,88 @@
+{
+  "users": [
+    {
+      "name": "Alice Dupont",
+      "email": "alice.dupont@example.com",
+      "password": "Alice2026!",
+      "role": "user"
+    },
+    {
+      "name": "Bruno Martin",
+      "email": "bruno.martin@example.com",
+      "password": "Bruno2026!",
+      "role": "user"
+    },
+    {
+      "name": "Clara Admin",
+      "email": "clara.admin@example.com",
+      "password": "Admin2026!",
+      "role": "admin"
+    }
+  ],
+  "products": [
+    {
+      "name": "Sac à dos urbain",
+      "description": "Sac à dos résistant avec multiples compartiments pour ordinateur portable et accessoires.",
+      "price": 33000,
+      "stock": 25,
+      "category": "Bagagerie",
+      "image": "images/sac-a-dos-urbain.avif"
+    },
+    {
+      "name": "Enceinte Bluetooth portable",
+      "description": "Enceinte nomade avec 10 heures d'autonomie et son surround.",
+      "price": 55000,
+      "stock": 18,
+      "category": "Audio",
+      "image": "images/enceinte-bluetooth.avif"
+    },
+    {
+      "name": "Montre connectée fitness",
+      "description": "Montre intelligente avec suivi d'activité, rythme cardiaque et notifications.",
+      "price": 85500.0,
+      "stock": 12,
+      "category": "Wearables",
+      "image": "images/montre-connectee.avif"
+    },
+    {
+      "name": "Jean slim homme",
+      "description": "Jean coupe slim en denim extensible, idéal pour un look moderne.",
+      "price": 26500.0,
+      "stock": 40,
+      "category": "Mode",
+      "image": "images/jean-slim-homme.avif"
+    },
+    {
+      "name": "T-shirt coton bio",
+      "description": "T-shirt léger en coton biologique, disponible en plusieurs couleurs.",
+      "price": 13000.0,
+      "stock": 50,
+      "category": "Mode",
+      "image": "images/tshirt-coton-bio.avif"
+    },
+    {
+      "name": "Lampe de bureau LED",
+      "description": "Lampe design avec intensité réglable et chargeur sans fil intégré.",
+      "price": 23000.0,
+      "stock": 30,
+      "category": "Maison",
+      "image": "images/lampe-led.avif"
+    },
+    {
+      "name": "Cafetière filtre",
+      "description": "Cafetière filtre compacte avec arrêt automatique et pause service.",
+      "price": 39000.0,
+      "stock": 22,
+      "category": "Cuisine",
+      "image": "images/cafetiere-filtre.avif"
+    },
+    {
+      "name": "Clé USB 64 Go",
+      "description": "Clé USB 3.0 rapide pour stocker et transférer vos fichiers en toute sécurité.",
+      "price": 9500.0,
+      "stock": 75,
+      "category": "Informatique",
+      "image": "images/cle-usb-64go.webp"
+    }
+  ]
+}
