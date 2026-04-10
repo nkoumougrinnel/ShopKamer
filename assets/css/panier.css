@@ -1,0 +1,144 @@
+/* ============================================================
+   ShopKamer – panier.css
+   ============================================================ */
+
+/* ── Panier summary block ─────────────────────────────────── */
+.panier-summary {
+  background: #1e1e1e;
+  border: 1px solid #2a2a2a;
+  border-radius: 18px;
+  padding: 2rem;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.45);
+}
+
+.panier-summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.panier-summary-header h3 {
+  color: #e8c97e;
+  font-size: 1.6rem;
+  margin-bottom: 0.3rem;
+}
+
+.panier-summary-header p {
+  color: #ccc;
+  font-size: 0.95rem;
+}
+
+/* ── Cart table ───────────────────────────────────────────── */
+.panier-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #f0ece4;
+}
+
+.panier-table th {
+  text-align: left;
+  padding: 0.85rem 0.5rem;
+  color: #e8c97e;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.panier-table th:not(:first-child) {
+  text-align: right;
+}
+
+.panier-table td {
+  padding: 1rem 0.5rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #2a2a2a;
+  font-size: 0.95rem;
+}
+
+.panier-table td:not(:first-child) {
+  text-align: right;
+}
+
+.panier-table .item-name {
+  font-weight: 500;
+  color: #f0ece4;
+}
+
+.panier-table .item-price,
+.panier-table .item-total {
+  color: #ccc;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Quantity input */
+.qty-input {
+  width: 54px;
+  background: #161616;
+  color: #f0ece4;
+  border: 1px solid #2a2a2a;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: border-color 0.2s ease;
+}
+.qty-input:focus {
+  outline: none;
+  border-color: #e8c97e;
+}
+
+/* Delete button */
+.btn-delete {
+  background: none;
+  border: none;
+  color: #e8c97e;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.btn-delete:hover {
+  color: #c8a85e;
+  background: rgba(232, 201, 126, 0.1);
+}
+
+/* ── Footer total row ─────────────────────────────────────── */
+.panier-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.panier-total-label {
+  color: #ccc;
+  font-size: 1rem;
+}
+
+.panier-total-amount {
+  color: #e8c97e;
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-family: "Playfair Display", serif;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .panier-table th:nth-child(3),
+  .panier-table td:nth-child(3) {
+    display: none; /* hide quantity column on very small screens */
+  }
+
+  .panier-summary-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
