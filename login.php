@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <p class="extra-links">
                     <a href="/forgot-password">Mot de passe oublié ?</a><br>
-                    <a href="/register">Créer un compte</a>
+                    <a href="register">Créer un compte</a>
                 </p>
             </form>
         </section>
