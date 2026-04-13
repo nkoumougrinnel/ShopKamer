@@ -1,3 +1,71 @@
+<?php
+require_once __DIR__ . '/config/db.php';
+
+$errors  = [];
+$success = false;
+ 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name     = trim($_POST['name']     ?? '');
+    $email    = trim($_POST['email']    ?? '');
+    $password = $_POST['password']      ?? '';
+    $confirm  = $_POST['confirm']       ?? '';
+ 
+    // ── Validation ──────────────────────────────────────────
+    if ($name === '') {
+        $errors[] = 'Le nom complet est requis.';
+    } elseif (strlen($name) < 2) {
+        $errors[] = 'Le nom doit contenir au moins 2 caractères.';
+    }
+ 
+    if ($email === '') {
+        $errors[] = 'L\'adresse e-mail est requise.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'L\'adresse e-mail n\'est pas valide.';
+    }
+ 
+    if ($password === '') {
+        $errors[] = 'Le mot de passe est requis.';
+    } elseif (strlen($password) < 8) {
+        $errors[] = 'Le mot de passe doit contenir au moins 8 caractères.';
+    } elseif (!preg_match('/[A-Z]/', $password) || !preg_match('/[0-9]/', $password)) {
+        $errors[] = 'Le mot de passe doit contenir au moins une majuscule et un chiffre.';
+    }
+ 
+    if ($confirm !== $password) {
+        $errors[] = 'Les mots de passe ne correspondent pas.';
+    }
+ 
+    // ── Vérification doublon e-mail ──────────────────────────
+    if (empty($errors)) {
+        $mysqli = getDbConnection();
+        $stmt = $mysqli->prepare('SELECT id FROM users WHERE email = ?');
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            $errors[] = 'Un compte avec cet e-mail existe déjà.';
+        }
+
+        $stmt->close();
+    }
+ 
+    // ── Enregistrement ───────────────────────────────────────
+    if (empty($errors)) {
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+        $stmt = $mysqli->prepare(
+            'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)'
+        );
+        $role = 'user';
+        $stmt->bind_param('ssss', $name, $email, $passwordHash, $role);
+        $stmt->execute();
+        $stmt->close();
+ 
+        $success = true;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -13,6 +81,25 @@
     <main>
         <section class="login-container">
             <h2>Créer un compte</h2>
+
+            <?php if ($success): ?>
+                <!-- ── Message de succès ─────────────────────── -->
+                <div class="auth-alert auth-alert--success">
+                    <strong>Compte créé avec succès !</strong><br>
+                    Vous pouvez maintenant <a href="login.php">vous connecter</a>.
+                </div>
+ 
+            <?php else: ?>
+                <!-- ── Erreurs de validation ─────────────────── -->
+                <?php if (!empty($errors)): ?>
+                    <div class="auth-alert auth-alert--error">
+                        <ul>
+                            <?php foreach ($errors as $err): ?>
+                                <li><?= htmlspecialchars($err) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
  
                 <!-- ── Formulaire ────────────────────────────── -->
                 <form action="" method="post" class="login-form" novalidate>
@@ -24,6 +111,7 @@
                             id="name"
                             name="name"
                             placeholder="Alice Dupont"
+                            value="<?= htmlspecialchars($_POST['name'] ?? '') ?>"
                             required>
                     </div>
  
@@ -34,6 +122,7 @@
                             id="email"
                             name="email"
                             placeholder="alice@exemple.com"
+                            value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
                             required>
                     </div>
  
@@ -71,6 +160,7 @@
                         Déjà inscrit ? <a href="login.php">Se connecter</a>
                     </p>
                 </form>
+            <?php endif; ?>
         </section>
     </main>
  

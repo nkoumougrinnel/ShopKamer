@@ -27,7 +27,9 @@ $featuredProducts = array_slice($products, 0, 4);
             <p>Découvrez une sélection curatée de produits de qualité, des articles de mode aux technologies dernière génération.</p>
             <div class="hero-actions">
                 <a href="catalogue.php" class="btn">Parcourir le Catalogue</a>
-                <a href="login.php" class="btn-secondary">Se connecter</a>
+                <?php if (!isset($_SESSION['user_id'])): ?>
+                    <a href="login.php" class="btn-secondary">Se connecter</a>
+                <?php endif; ?>
             </div>
         </section>
 

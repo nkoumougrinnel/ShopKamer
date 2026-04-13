@@ -1,7 +1,60 @@
 <?php
+session_start();
+require_once __DIR__ . '/config/db.php';
+
+$errors = [];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    header('Location: index.php');
-    exit;
+    $email    = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if ($email === '') {
+        $errors[] = 'L\'adresse e-mail est requise.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'L\'adresse e-mail n\'est pas valide.';
+    }
+
+    if ($password === '') {
+        $errors[] = 'Le mot de passe est requis.';
+    }
+
+    if (empty($errors)) {
+        $mysqli = getDbConnection();
+        $stmt = $mysqli->prepare('SELECT id, name, email, password, role FROM users WHERE email = ?');
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        $stmt->close();
+
+        if (!$user) {
+            $errors[] = 'Identifiants incorrects.';
+        } else {
+            $passwordOk = false;
+
+            if (password_verify($password, $user['password'])) {
+                $passwordOk = true;
+            } elseif ($password === $user['password']) {
+                $passwordOk = true;
+                $newHash = password_hash($password, PASSWORD_DEFAULT);
+                $update = $mysqli->prepare('UPDATE users SET password = ? WHERE id = ?');
+                $update->bind_param('si', $newHash, $user['id']);
+                $update->execute();
+                $update->close();
+            }
+
+            if ($passwordOk) {
+                $_SESSION['user_id']   = $user['id'];
+                $_SESSION['user_name'] = $user['name'];
+                $_SESSION['user_role'] = $user['role'];
+
+                header('Location: index.php');
+                exit;
+            }
+
+            $errors[] = 'Identifiants incorrects.';
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -19,6 +72,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <main>
         <section class="login-container">
             <h2>Connexion</h2>
+            <?php if (!empty($errors)): ?>
+                <div class="auth-alert auth-alert--error">
+                    <ul>
+                        <?php foreach ($errors as $err): ?>
+                            <li><?= htmlspecialchars($err) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
             <form action="" method="post" class="login-form">
                 <div class="form-group">
                     <label for="email">Adresse e-mail</label>
@@ -34,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <p class="extra-links">
                     <a href="/forgot-password">Mot de passe oublié ?</a><br>
-                    <a href="register">Créer un compte</a>
+                    <a href="register.php">Créer un compte</a>
                 </p>
             </form>
         </section>
