@@ -1,12 +1,16 @@
 <?php 
-// Récupère les données JSON du fichier local et les transforme en tableau PHP.
-$jsonData = json_decode(file_get_contents('donnees_test.json'), true);
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-// Récupère la liste complète des produits dans le tableau JSON.
-$products = $jsonData['products'];
+require_once __DIR__ . '/config/db.php';
 
-// Sélectionne les 4 premiers produits pour l'affichage en vedette sur la page d'accueil.
-$featuredProducts = array_slice($products, 0, 4);
+$mysqli = getDbConnection();
+$result = $mysqli->query(
+    'SELECT id, name, description, price, category, image FROM products ORDER BY id ASC LIMIT 4'
+);
+$featuredProducts = $result->fetch_all(MYSQLI_ASSOC);
+$result->close();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -37,15 +41,15 @@ $featuredProducts = array_slice($products, 0, 4);
         <section class="home-section">
             <h2>Nos Catégories</h2>
             <div class="categories-grid">
-                <a href="catalogue.php?cat=mode" class="category-card">
+                <a href="catalogue.php?categorie=Mode" class="category-card">
                     <h3>Mode</h3>
                     <p>Vêtements et accessoires</p>
                 </a>
-                <a href="catalogue.php?cat=tech" class="category-card">
+                <a href="catalogue.php?categorie=Audio" class="category-card">
                     <h3>Technologie</h3>
                     <p>Appareils et gadgets</p>
                 </a>
-                <a href="catalogue.php?cat=maison" class="category-card">
+                <a href="catalogue.php?categorie=Maison" class="category-card">
                     <h3>Maison</h3>
                     <p>Décoration et ameublement</p>
                 </a>

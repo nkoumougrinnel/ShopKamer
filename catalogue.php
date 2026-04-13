@@ -1,13 +1,46 @@
 <?php
-// Charge le contenu JSON depuis le fichier local puis le convertit en tableau PHP.
-$jsonData   = json_decode(file_get_contents('donnees_test.json'), true);
+require_once __DIR__ . '/config/db.php';
 
-// Récupère la liste complète des produits stockée sous la clé "products".
-$products   = $jsonData['products'];
+$mysqli = getDbConnection();
 
-// Extrait les catégories de tous les produits, supprime les doublons et trie le résultat.
-$categories = array_unique(array_column($products, 'category'));
-sort($categories);
+$selectedCategory = trim((string) ($_GET['categorie'] ?? ''));
+if (strtolower($selectedCategory) === 'tous') {
+    $selectedCategory = '';
+}
+$searchTerm = trim((string) ($_GET['search'] ?? ''));
+
+// Liste des catégories disponibles.
+$categoryResult = $mysqli->query('SELECT DISTINCT category FROM products ORDER BY category ASC');
+$categories = $categoryResult->fetch_all(MYSQLI_ASSOC);
+$categoryResult->close();
+
+// Construction de la requête produit.
+$sql = 'SELECT id, name, description, price, category, image FROM products WHERE 1 = 1';
+$types = '';
+$params = [];
+
+if ($selectedCategory !== '') {
+    $sql .= ' AND LOWER(category) = ?';
+    $types .= 's';
+    $params[] = strtolower($selectedCategory);
+}
+
+if ($searchTerm !== '') {
+    $sql .= ' AND name LIKE ?';
+    $types .= 's';
+    $params[] = '%' . $searchTerm . '%';
+}
+
+$sql .= ' ORDER BY name ASC';
+
+$stmt = $mysqli->prepare($sql);
+if ($types !== '') {
+    $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$result = $stmt->get_result();
+$products = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -31,17 +64,31 @@ sort($categories);
             <a href="panier.php" class="btn">Voir le panier</a>
         </section>
 
-        <!-- Filtres générés depuis les catégories du JSON -->
+        <form method="get" class="search-form">
+            <input
+                type="search"
+                name="search"
+                placeholder="Rechercher un produit..."
+                value="<?= htmlspecialchars($searchTerm) ?>"
+            >
+            <?php if ($selectedCategory !== ''): ?>
+                <input type="hidden" name="categorie" value="<?= htmlspecialchars($selectedCategory) ?>">
+            <?php endif; ?>
+            <button type="submit" class="btn">Rechercher</button>
+        </form>
+
         <div class="filters">
-            <button class="filter-btn active" data-filter="tous">Tous</button>
+            <a href="catalogue.php<?= $searchTerm !== '' ? '?search=' . urlencode($searchTerm) : '' ?>" class="filter-btn <?= $selectedCategory === '' ? 'active' : '' ?>">
+                Tous
+            </a>
             <?php foreach ($categories as $cat): ?>
-                <button class="filter-btn" data-filter="<?= htmlspecialchars(strtolower($cat)) ?>">
-                    <?= htmlspecialchars(ucfirst($cat)) ?>
-                </button>
+                <?php $catValue = $cat['category']; ?>
+                <a href="catalogue.php?categorie=<?= urlencode($catValue) ?><?= $searchTerm !== '' ? '&search=' . urlencode($searchTerm) : '' ?>" class="filter-btn <?= strtolower($selectedCategory) === strtolower($catValue) ? 'active' : '' ?>">
+                    <?= htmlspecialchars($catValue) ?>
+                </a>
             <?php endforeach; ?>
         </div>
 
-        <!-- Grille de produits générée depuis le JSON -->
         <div class="product-grid">
             <?php foreach ($products as $product): ?>
                 <article class="product-card" data-category="<?= htmlspecialchars(strtolower($product['category'])) ?>">
@@ -68,20 +115,5 @@ sort($categories);
     </main>
 
     <?php include 'includes/footer.php'; ?>
-
-    <script>
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-
-                const filter = this.dataset.filter;
-                document.querySelectorAll('.product-card').forEach(card => {
-                    card.style.display =
-                        (filter === 'tous' || card.dataset.category === filter) ? '' : 'none';
-                });
-            });
-        });
-    </script>
 </body>
 </html>
