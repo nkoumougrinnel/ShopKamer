@@ -7,7 +7,7 @@ require_once __DIR__ . '/config/db.php';
 
 $mysqli = getDbConnection();
 $result = $mysqli->query(
-    'SELECT id, name, description, price, category, image FROM products ORDER BY id ASC LIMIT 4'
+    'SELECT id, name, description, price, category, image FROM products ORDER BY id ASC LIMIT 6'
 );
 $featuredProducts = $result->fetch_all(MYSQLI_ASSOC);
 $result->close();

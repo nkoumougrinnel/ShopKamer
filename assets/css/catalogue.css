@@ -20,8 +20,8 @@
   background: #161616;
   color: #f0ece4;
   border: 1px solid #2a2a2a;
-  appearance: none;
   -webkit-appearance: none;
+  appearance: none;
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
@@ -157,6 +157,17 @@
   justify-content: space-between;
   gap: 1rem;
   margin-top: auto;
+}
+
+.product-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.product-actions .btn {
+  padding: 0.55rem 1rem;
+  font-size: 0.85rem;
 }
 
 /* ── Add-to-cart button ───────────────────────────────────── */

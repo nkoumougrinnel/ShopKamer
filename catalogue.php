@@ -106,7 +106,10 @@ $stmt->close();
                             <div class="product-price">
                                 <?= number_format($product['price'], 0, ',', ' ') ?> FCFA
                             </div>
-                            <button class="add-btn" title="Ajouter au panier">+</button>
+                            <div class="product-actions">
+                                <a href="product.php?id=<?= urlencode($product['id']) ?>" class="btn">Voir</a>
+                                <button class="add-btn" title="Ajouter au panier">+</button>
+                            </div>
                         </div>
                     </div>
                 </article>
