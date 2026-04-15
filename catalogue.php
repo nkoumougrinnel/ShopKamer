@@ -15,7 +15,7 @@ $categories = $categoryResult->fetch_all(MYSQLI_ASSOC);
 $categoryResult->close();
 
 // Construction de la requête produit.
-$sql = 'SELECT id, name, description, price, category, image FROM products WHERE 1 = 1';
+$sql = 'SELECT id, name, description, price, category, image, stock FROM products WHERE 1 = 1';
 $types = '';
 $params = [];
 
@@ -108,7 +108,17 @@ $stmt->close();
                             </div>
                             <div class="product-actions">
                                 <a href="product.php?id=<?= urlencode($product['id']) ?>" class="btn">Voir</a>
-                                <button class="add-btn" title="Ajouter au panier">+</button>
+                                <button
+                                    class="add-btn add-to-cart"
+                                    title="Ajouter au panier"
+                                    data-product-id="<?= htmlspecialchars($product['id']) ?>"
+                                    data-product-name="<?= htmlspecialchars($product['name']) ?>"
+                                    data-product-price="<?= htmlspecialchars($product['price']) ?>"
+                                    data-product-stock="<?= htmlspecialchars($product['stock'] ?? 0) ?>"
+                                    data-product-image="<?= htmlspecialchars($product['image']) ?>"
+                                    data-success-message="<?= htmlspecialchars($product['name']) ?> ajouté au panier"
+                                >+
+                                </button>
                             </div>
                         </div>
                     </div>

@@ -63,7 +63,16 @@ $isOutOfStock = ((int) $product['stock'] <= 0);
                 </div>
 
                 <div class="product-detail-actions">
-                    <button class="btn" <?= $isOutOfStock ? 'disabled' : '' ?>>Ajouter au panier</button>
+                    <button
+                        class="btn add-to-cart"
+                        <?= $isOutOfStock ? 'disabled' : '' ?>
+                        data-product-id="<?= htmlspecialchars($product['id']) ?>"
+                        data-product-name="<?= htmlspecialchars($product['name']) ?>"
+                        data-product-price="<?= htmlspecialchars($product['price']) ?>"
+                        data-product-stock="<?= htmlspecialchars($product['stock']) ?>"
+                        data-product-image="<?= htmlspecialchars($product['image']) ?>"
+                        data-success-message="<?= htmlspecialchars($product['name']) ?> ajouté au panier"
+                    >Ajouter au panier</button>
                     <?php if ($isOutOfStock): ?>
                         <span class="stock-empty">Rupture de stock</span>
                     <?php endif; ?>

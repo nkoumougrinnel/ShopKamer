@@ -7,7 +7,7 @@ require_once __DIR__ . '/config/db.php';
 
 $mysqli = getDbConnection();
 $result = $mysqli->query(
-    'SELECT id, name, description, price, category, image FROM products ORDER BY id ASC LIMIT 6'
+    'SELECT id, name, description, price, category, image, stock FROM products ORDER BY id ASC LIMIT 8'
 );
 $featuredProducts = $result->fetch_all(MYSQLI_ASSOC);
 $result->close();
@@ -82,7 +82,20 @@ $result->close();
                             <span class="featured-card-price">
                                 <?= number_format($product['price'], 0, ',', ' ') ?> FCFA
                             </span>
-                            <button class="featured-add-btn" title="Ajouter au panier">+</button>
+                            <div class="featured-card-actions">
+                                <a href="product.php?id=<?= urlencode($product['id']) ?>" class="btn">Voir</a>
+                                <button
+                                    class="featured-add-btn add-to-cart"
+                                    title="Ajouter au panier"
+                                    data-product-id="<?= htmlspecialchars($product['id']) ?>"
+                                    data-product-name="<?= htmlspecialchars($product['name']) ?>"
+                                    data-product-price="<?= htmlspecialchars($product['price']) ?>"
+                                    data-product-stock="<?= htmlspecialchars($product['stock']) ?>"
+                                    data-product-image="<?= htmlspecialchars($product['image']) ?>"
+                                    data-success-message="<?= htmlspecialchars($product['name']) ?> ajouté au panier"
+                                >+
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </article>

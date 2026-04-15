@@ -33,7 +33,7 @@ if (!isset($_SESSION['user_id'])) {
             <div class="panier-summary-header">
                 <div>
                     <h3>Résumé du Panier</h3>
-                    <p>Vous avez 3 articles. Total estimé.</p>
+                    <p id="panier-count">Votre panier est vide.</p>
                 </div>
                 <a href="catalogue.php" class="btn-secondary">Continuer mes achats</a>
             </div>
@@ -48,40 +48,26 @@ if (!isset($_SESSION['user_id'])) {
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="cart-items">
                     <tr>
-                        <td class="item-name">Sac à dos urbain</td>
-                        <td class="item-price">33 000 FCFA</td>
-                        <td><input type="number" value="1" min="1" class="qty-input"></td>
-                        <td class="item-total">33 000 FCFA</td>
-                        <td><button class="btn-delete">Supprimer</button></td>
-                    </tr>
-                    <tr>
-                        <td class="item-name">Enceinte Bluetooth portable</td>
-                        <td class="item-price">55 000 FCFA</td>
-                        <td><input type="number" value="1" min="1" class="qty-input"></td>
-                        <td class="item-total">55 000 FCFA</td>
-                        <td><button class="btn-delete">Supprimer</button></td>
-                    </tr>
-                    <tr>
-                        <td class="item-name">Montre connectée fitness</td>
-                        <td class="item-price">85 500 FCFA</td>
-                        <td><input type="number" value="1" min="1" class="qty-input"></td>
-                        <td class="item-total">85 500 FCFA</td>
-                        <td><button class="btn-delete">Supprimer</button></td>
+                        <td colspan="5" class="empty-cart">Chargement du panier…</td>
                     </tr>
                 </tbody>
             </table>
+            <form id="cart-submit-form" action="panier.php" method="post" style="display:none;">
+                <input type="hidden" name="cart_data" id="cart-data" value="">
+            </form>
 
             <div class="panier-footer">
                 <span class="panier-total-label">
-                    Total : <strong class="panier-total-amount">173 500 FCFA</strong>
+                    Total : <strong class="panier-total-amount">0 FCFA</strong>
                 </span>
-                <button class="btn">Passer à la caisse</button>
+                <button class="btn" type="button" id="checkout-button">Passer à la caisse</button>
             </div>
         </div>
     </main>
 
     <?php include 'includes/footer.php'; ?>
+    <script src="assets/js/panier.js"></script>
 </body>
 </html>

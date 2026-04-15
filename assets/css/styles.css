@@ -4,7 +4,9 @@
    ============================================================ */
 
 /* ── Reset ────────────────────────────────────────────────── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -50,7 +52,9 @@ header {
   font-weight: 900;
   color: #e8c97e;
 }
-.logo span { color: #f0ece4; }
+.logo span {
+  color: #f0ece4;
+}
 
 nav {
   display: flex;
@@ -61,12 +65,34 @@ nav a {
   color: #f0ece4;
   padding: 0.7rem 1rem;
   border-radius: 999px;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
 }
 nav a:hover,
 nav a.active {
   background-color: rgba(232, 201, 126, 0.16);
   color: #e8c97e;
+}
+
+.cart-count {
+  display: inline-flex;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.4rem;
+  padding: 0 0.45rem;
+  border-radius: 999px;
+  background: #e8c97e;
+  color: #0e0e0e;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.cart-link {
+  display: inline-flex;
+  align-items: center;
 }
 
 /* ── Main wrapper ─────────────────────────────────────────── */
@@ -116,7 +142,7 @@ section h2 {
 
 .section-title h2 {
   font-size: 1.8rem;
-  border-bottom: none;   
+  border-bottom: none;
   padding-bottom: 0;
   margin-bottom: 0.4rem;
   color: #e8c97e;
@@ -148,7 +174,9 @@ button.btn {
   border-radius: 999px;
   cursor: pointer;
   text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
   white-space: nowrap;
 }
 .btn:hover,
@@ -177,7 +205,10 @@ button.btn-secondary {
   border-radius: 999px;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
   white-space: nowrap;
 }
 .btn-secondary:hover,
@@ -215,9 +246,15 @@ footer {
 }
 .footer-brand p,
 .footer-col ul a,
-.footer-bottom p { color: #888; }
-.footer-col ul a:hover { color: #e8c97e; }
-.footer-col h4 { color: #e8c97e; }
+.footer-bottom p {
+  color: #888;
+}
+.footer-col ul a:hover {
+  color: #e8c97e;
+}
+.footer-col h4 {
+  color: #e8c97e;
+}
 
 /* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 768px) {
@@ -225,7 +262,9 @@ footer {
     justify-content: center;
     padding: 1rem;
   }
-  main { padding: 0 0.75rem; }
+  main {
+    padding: 0 0.75rem;
+  }
 
   .section-title {
     flex-direction: column;
