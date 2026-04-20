@@ -54,7 +54,7 @@ if (!isset($_SESSION['user_id'])) {
                     </tr>
                 </tbody>
             </table>
-            <form id="cart-submit-form" action="panier.php" method="post" style="display:none;">
+            <form id="cart-submit-form" action="paiement.php" method="post" style="display:none;">
                 <input type="hidden" name="cart_data" id="cart-data" value="">
             </form>
 
